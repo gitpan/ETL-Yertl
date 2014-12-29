@@ -1,0 +1,59 @@
+NAME
+    ETL::Yertl - ETL with a Shell
+
+VERSION
+    version 0.015
+
+SYNOPSIS
+        ### On a shell...
+        # Convert file to Yertl's format
+        $ yfrom csv file.csv >work.yml
+        $ yfrom json file.json >work.yml
+
+        # Mask document
+        $ ymask 'field/inner' work.yml >masked.yml
+
+        # Convert file to output format
+        $ yto csv work.yml
+        $ yto json work.yml
+
+        ### In Perl...
+        use ETL::Yertl;
+
+        # XXX: To do: Perl API
+
+DESCRIPTION
+    ETL::Yertl is an ETL for shells. It is designed to accept data from
+    multiple formats (CSV, JSON), manipulate them using simple tools, and
+    then convert them to an output format.
+
+    Yertl will have tools for:
+
+    Extracting data from databases (MySQL, Postgres, MongoDB)
+    Loading data into databases
+    Extracting data from web services
+    Writing data to web services
+    Distributing data through messaging APIs (ZeroMQ)
+
+SEE ALSO
+  Yertl Tools
+    yfrom
+    yto
+    ymask
+    yq
+
+  Other Tools
+    Here are some other tools that can be used with Yertl
+
+    jq  <http://stedolan.github.io/jq/> A filter for JSON documents. The
+        inspiration for yq.
+
+AUTHOR
+    Doug Bell <preaction@cpan.org>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2014 by Doug Bell.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+

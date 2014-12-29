@@ -1,0 +1,91 @@
+#!/usr/bin/env perl
+package ymask;
+# ABSTRACT: Mask a data structure to display only the desired fields
+$ymask::VERSION = '0.015';
+use ETL::Yertl;
+use Pod::Usage::Return qw( pod2usage );
+use Getopt::Long qw( GetOptionsFromArray );
+use ETL::Yertl::Command::ymask;
+
+$|++; # no buffering
+
+sub main {
+    my ( $class, @argv ) = @_;
+    my %opt;
+    GetOptionsFromArray( \@argv, \%opt,
+        'help|h',
+        'version',
+    );
+    return pod2usage(0) if $opt{help};
+    if ( $opt{version} ) {
+        print "ymask version $ymask::VERSION (Perl $^V)\n";
+        return 0;
+    }
+
+    eval {
+        ETL::Yertl::Command::ymask->main( @argv, \%opt );
+    };
+    if ( $@ ) {
+        return pod2usage( "ERROR: $@" );
+    }
+    return 0;
+}
+
+exit __PACKAGE__->main( @ARGV ) unless caller(0);
+
+__END__
+
+=pod
+
+=head1 NAME
+
+ymask - Mask a data structure to display only the desired fields
+
+=head1 VERSION
+
+version 0.015
+
+=head1 SYNOPSIS
+
+    ymask <mask> [<file>...]
+
+    ymask -h|--help|--version
+
+=head1 DESCRIPTION
+
+This program takes a stream of YAML documents (on STDIN or file arguments),
+and prints only the fields specified by the C<mask>.
+
+=head1 ARGUMENTS
+
+=head2 mask
+
+See L<Data::Partial::Google/Rules> for more information
+
+=head2 <file>
+
+A YAML file to read. The special file "-" refers to STDIN. If no files are
+specified, read STDIN.
+
+=head1 OPTIONS
+
+=head2 -h | --help
+
+Show this help document.
+
+=head2 --version
+
+Print the current ymask and Perl versions.
+
+=head1 AUTHOR
+
+Doug Bell <preaction@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2014 by Doug Bell.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
