@@ -1,0 +1,190 @@
+#!/usr/bin/env perl
+package ysql;
+# ABSTRACT: Query SQL databases in a Yertl workflow
+$ysql::VERSION = '0.016';
+use ETL::Yertl;
+use Pod::Usage::Return qw( pod2usage );
+use Getopt::Long qw( GetOptionsFromArray :config pass_through );
+use ETL::Yertl::Command::ysql;
+
+$|++; # no buffering
+
+sub main {
+    my ( $class, @argv ) = @_;
+    my %opt;
+    GetOptionsFromArray( \@argv, \%opt,
+        'help|h',
+        'version',
+        'dsn=s',
+    );
+    return pod2usage(0) if $opt{help};
+    if ( $opt{version} ) {
+        print "ysql version $ysql::VERSION (Perl $^V)\n";
+        return 0;
+    }
+
+    eval {
+        ETL::Yertl::Command::ysql->main( @argv, \%opt );
+    };
+    if ( $@ ) {
+        return pod2usage( "ERROR: $@" );
+    }
+    return 0;
+}
+
+exit __PACKAGE__->main( @ARGV ) unless caller(0);
+
+__END__
+
+=pod
+
+=head1 NAME
+
+ysql - Query SQL databases in a Yertl workflow
+
+=head1 VERSION
+
+version 0.016
+
+=head1 SYNOPSIS
+
+    ysql query [<db_name> | --dsn <dsn>] <query> [<value>...]
+    ysql write [<db_name> | --dsn <dsn>] <query>
+
+    ### Saved queries
+    # Save
+    ysql query <db_name> --save <query_name> <query>
+    # Execute
+    ysql query <db_name> <query_name> [<value>...]
+
+    ### Add/edit database configuration
+    ysql config <db_name> <dsn> [--user <user>] [--password <password>]
+    ysql config <db_name> [--driver <driver>] [--database <database] [--host <host>]
+        [--port <port>] [--user <user>] [--password <password>]
+
+    ysql -h|--help|--version
+
+=head1 DESCRIPTION
+
+This program queries a SQL database and prints the result as YAML.
+
+=head1 COMMANDS
+
+=head2 config <db_name> <options>
+
+Configure the given C<db_name> with the given options. Available options are:
+
+=over 4
+
+=item --driver <driver>
+
+The database driver to use, corresponding to a DBD::* module. Some examples: C<SQLite>,
+C<mysql>, C<Pg>.
+
+=item --database <database>
+
+The name of the database. For SQLite, the name of the database file.
+
+=item --host <host>
+
+The hostname to connect to. Optional.
+
+=item --port <port>
+
+The port to connect to. Optional.
+
+=item --user <user>
+
+The user to connect as. Optional.
+
+=item --password <password>
+
+The password to connect with. Optional. This is stored in plain text, so beware.
+
+=back
+
+=head2 config <db_name> <dsn>
+
+Configure the given C<db_name> with the given C<dsn>. The C<user> and C<password>
+options can also be used.
+
+=head2 query <query> [<value>...]
+
+Run a query to read data from the database. C<query> is either the name of a saved
+query, or SQL (usually a C<SELECT>). C<value> is used to fill in C<?> placeholders.
+
+=head2 query --save <query_name> <query>
+
+Save a query to run later.
+
+=head2 write <query>
+
+Run a query to write data to the database. C<query> is a SQL query, usually an C<INSERT>.
+YAML documents are read from C<STDIN>.
+
+In order to map keys in the YAML document to fields in the SQL query, C<ysql> supports
+named placeholders, which begin with C<$.>. For example:
+
+    # input.yml
+    ---
+    name: Stormy Waters
+    email: stormy@example.com
+    profile:
+        dept: Pilot
+    ---
+    name: Debbie Dupree
+    email: debbie@example.com
+    profile:
+        dept: Wildlife
+
+    $ ysql write 'INSERT INTO person ( name, email, dept ) \
+                  VALUES ( $.name, $.email, $.profile.dept )' \
+                  < input.yml
+
+=head1 ARGUMENTS
+
+=head2 db_name
+
+The saved database name to use. Add and edit databases using the L<config> command.
+
+=head2 query
+
+The SQL query to run against the database.
+
+=head1 OPTIONS
+
+=head2 dsn
+
+The L<DBI> Data Source Name. A string that DBI uses to connect to the database.
+
+Some examples:
+
+    # A SQLite database in "test.db"
+    dbi:SQLite:test.db
+
+    # A MySQL database named "example"
+    dbi:mysql:example
+
+    # A Postgres database named "foo"
+    dbi:Pg:foo
+
+=head2 -h | --help
+
+Show this help document.
+
+=head2 --version
+
+Print the current ysql and Perl versions.
+
+=head1 AUTHOR
+
+Doug Bell <preaction@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2015 by Doug Bell.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

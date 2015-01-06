@@ -1,0 +1,130 @@
+name    = ETL-Yertl
+author  = Doug Bell <preaction@cpan.org>
+license = Perl_5
+main_module = lib/ETL/Yertl.pm
+copyright_holder = Doug Bell
+copyright_year   = 2015
+
+[Authority]
+authority  = cpan:PREACTION
+do_munging = 0
+
+[MetaResources]
+homepage                = https://github.com/preaction/ETL-Yertl
+IRC                     = irc://irc.perl.org/#yertl
+repository.web          = https://github.com/preaction/ETL-Yertl
+repository.url          = https://github.com/preaction/ETL-Yertl.git
+bugtracker.web          = https://github.com/preaction/ETL-Yertl/issues
+repository.type         = git
+
+; --- Module management
+[@Basic]
+[ManifestSkip]
+[ReadmeFromPod]
+[ReadmeMarkdownFromPod]
+[PodWeaver]
+[PkgVersion]
+[ModuleBuild]
+[CPANFile]
+[Git::Contributors]
+; authordep Pod::Weaver::Section::Contributors
+
+; --- Repository management
+[PruneFiles]
+; Remove unnecessary root content from the generated dist package
+match = ^\..+
+match = ^[^/]+\.ini$
+match = ^eg/.*
+
+[Run::BeforeBuild]
+; Remove generated root content so it can be regenerated
+run = rm -f cpanfile
+run = rm -f INSTALL
+run = rm -f LICENSE
+run = rm -f CHANGES
+run = rm -f README
+run = rm -f README.mkdn
+run = rm -f Build.PL
+run = rm -f Makefile.PL
+
+[ChangelogFromGit::CPAN::Changes]
+; Create a changelog from the git repository commits
+; The changelog will contain the short description of the change
+file_name = CHANGES
+show_author = 0
+
+[Run::AfterBuild]
+; Add travis and coveralls badges to README.mkdn
+run = perl -pi -e 's{(# SYNOPSIS)}{# STATUS\n\n<a href="https://travis-ci.org/preaction/ETL-Yertl"><img src="https://travis-ci.org/preaction/ETL-Yertl.svg?branch=master"></a><a href="https://coveralls.io/r/preaction/ETL-Yertl"><img src="https://coveralls.io/repos/preaction/ETL-Yertl/badge.png" alt="Coverage Status" /></a>\n\n$1}' %d/README.mkdn
+
+[CopyFilesFromBuild]
+; Copy generated content to the repository root so users without Dist::Zilla
+; can use it
+copy = cpanfile
+copy = INSTALL
+copy = LICENSE
+copy = CHANGES
+copy = README
+copy = README.mkdn
+copy = Build.PL
+copy = Makefile.PL
+
+; --- Git management
+[Git::NextVersion]
+[@Git]
+; Automatically commit these files during release
+changelog = CHANGES
+allow_dirty_match = README.*
+allow_dirty_match = .*[.]PL
+allow_dirty = INSTALL
+allow_dirty = LICENSE
+allow_dirty = CHANGES
+allow_dirty = cpanfile
+; Automatically commit with release version and changelog
+commit_msg = release v%v%n%n%c
+tag_message = %N v%v - %{yyyy-MM-dd}d%n%n%c ; Tag annotations show up in github release list
+
+; --- Project-specific directives
+[Prereqs]
+perl = 5.010           ; Recursive regexp: (?R) and defined-or
+YAML = 0
+Import::Base = 0
+Getopt::Long = 2.36    ; First version with GetOptionsFromArray
+Pod::Usage::Return = 0
+File::Spec = 0
+boolean = 0
+Regexp::Common = 0
+Module::Runtime = 0
+Parse::RecDescent = 0
+;Marpa::R2 = 0
+Data::Partial::Google = 0
+Text::Trim = 0
+Moo::Lax = 0
+Type::Tiny = 0
+Types::Standard = 0
+List::Util = 1.29
+Path::Tiny = 0.055
+File::HomeDir = 0
+
+[Prereqs / Recommends]
+; Formatter modules
+JSON::XS = 0
+JSON::PP = 0
+YAML::XS = 0
+YAML::Syck = 0
+Text::CSV = 0
+Text::CSV_XS = 0
+; Optional, compiled modules
+DBI = 0
+DBD::SQLite = 0
+
+[Prereqs / TestRequires]
+Test::Compile = 0
+Test::More = 1.001005
+Test::Exception = 0
+Test::Deep = 0
+Test::Differences = 0
+Test::Lib = 0
+Capture::Tiny = 0
+JSON::PP = 0
+Dir::Self = 0

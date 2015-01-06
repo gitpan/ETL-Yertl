@@ -12,7 +12,7 @@ build_requires:
   Test::Differences: '0'
   Test::Exception: '0'
   Test::Lib: '0'
-  Test::More: '0'
+  Test::More: '1.001005'
 configure_requires:
   ExtUtils::MakeMaker: '0'
   Module::Build: '0.28'
@@ -24,6 +24,8 @@ meta-spec:
   version: '1.4'
 name: ETL-Yertl
 recommends:
+  DBD::SQLite: '0'
+  DBI: '0'
   JSON::PP: '0'
   JSON::XS: '0'
   Text::CSV: '0'
@@ -32,14 +34,15 @@ recommends:
   YAML::XS: '0'
 requires:
   Data::Partial::Google: '0'
+  File::HomeDir: '0'
   File::Spec: '0'
   Getopt::Long: '2.36'
-  Import::Base: '0'
+  Import::Base: '0.010'
   List::Util: '1.29'
   Module::Runtime: '0'
   Moo::Lax: '0'
   Parse::RecDescent: '0'
-  Path::Tiny: '0'
+  Path::Tiny: '0.055'
   Pod::Usage::Return: '0'
   Regexp::Common: '0'
   Text::Trim: '0'
@@ -53,5 +56,7 @@ resources:
   bugtracker: https://github.com/preaction/ETL-Yertl/issues
   homepage: https://github.com/preaction/ETL-Yertl
   repository: https://github.com/preaction/ETL-Yertl.git
-version: '0.015'
+version: '0.016'
 x_authority: cpan:PREACTION
+x_contributors:
+  - 'Doug Bell <doug.bell@baml.com>'

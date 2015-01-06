@@ -1,6 +1,6 @@
 package ETL::Yertl;
 # ABSTRACT: ETL with a Shell
-$ETL::Yertl::VERSION = '0.015';
+$ETL::Yertl::VERSION = '0.016';
 use strict;
 use warnings;
 use base 'Import::Base';
@@ -9,6 +9,7 @@ our @IMPORT_MODULES = (
     strict => [],
     warnings => [],
     feature => [qw( :5.10 )],
+    'Path::Tiny' => [qw( path )],
 );
 
 my @class_modules = (
@@ -20,7 +21,7 @@ our %IMPORT_BUNDLES = (
         qw( Test::More Test::Deep Test::Exception Test::Differences ),
         FindBin => [ '$Bin' ],
         boolean => [':all'],
-        'Path::Tiny' => [qw( path cwd )],
+        'Path::Tiny' => [qw( cwd tempfile tempdir )],
         'Dir::Self' => [qw( __DIR__ )],
     ],
 
@@ -54,7 +55,7 @@ ETL::Yertl - ETL with a Shell
 
 =head1 VERSION
 
-version 0.015
+version 0.016
 
 =head1 SYNOPSIS
 
@@ -130,9 +131,15 @@ for L<yq>.
 
 Doug Bell <preaction@cpan.org>
 
+=head1 CONTRIBUTOR
+
+=for stopwords Doug Bell
+
+Doug Bell <doug.bell@baml.com>
+
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Doug Bell.
+This software is copyright (c) 2015 by Doug Bell.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

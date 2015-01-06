@@ -1,6 +1,6 @@
 package ETL::Yertl::Format::yaml;
 # ABSTRACT: YAML read/write support for Yertl
-$ETL::Yertl::Format::yaml::VERSION = '0.015';
+$ETL::Yertl::Format::yaml::VERSION = '0.016';
 use ETL::Yertl 'Class';
 use Module::Runtime qw( use_module );
 use List::Util qw( pairs pairkeys pairfirst );
@@ -62,7 +62,8 @@ my %FORMAT_SUB = (
 
         read => sub {
             my $self = shift;
-            return YAML::XS::Load( do { local $/; readline $self->input } );
+            my $yaml = do { local $/; readline $self->input };
+            return $yaml ? YAML::XS::Load( $yaml ) : ();
         },
 
     },
@@ -75,7 +76,8 @@ my %FORMAT_SUB = (
 
         read => sub {
             my $self = shift;
-            return YAML::Syck::Load( do { local $/; readline $self->input } );
+            my $yaml = do { local $/; readline $self->input };
+            return $yaml ? YAML::Syck::Load( $yaml ) : ();
         },
 
     },
@@ -88,7 +90,8 @@ my %FORMAT_SUB = (
 
         read => sub {
             my $self = shift;
-            return YAML::Load( do { local $/; readline $self->input } );
+            my $yaml = do { local $/; readline $self->input };
+            return $yaml ? YAML::Load( $yaml ) : ();
         },
 
     },
@@ -118,7 +121,7 @@ ETL::Yertl::Format::yaml - YAML read/write support for Yertl
 
 =head1 VERSION
 
-version 0.015
+version 0.016
 
 =head1 ATTRIBUTES
 
@@ -156,7 +159,7 @@ Doug Bell <preaction@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Doug Bell.
+This software is copyright (c) 2015 by Doug Bell.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

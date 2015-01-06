@@ -1,5 +1,5 @@
 package ETL::Yertl::Command::ymask;
-$ETL::Yertl::Command::ymask::VERSION = '0.015';
+$ETL::Yertl::Command::ymask::VERSION = '0.016';
 use ETL::Yertl;
 use ETL::Yertl::Format::yaml;
 use Data::Partial::Google;
@@ -53,7 +53,7 @@ ETL::Yertl::Command::ymask
 
 =head1 VERSION
 
-version 0.015
+version 0.016
 
 =head1 AUTHOR
 
@@ -61,7 +61,7 @@ Doug Bell <preaction@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Doug Bell.
+This software is copyright (c) 2015 by Doug Bell.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

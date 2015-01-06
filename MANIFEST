@@ -11,8 +11,10 @@ README.mkdn
 bin/yfrom
 bin/ymask
 bin/yq
+bin/ysql
 bin/yto
 cpanfile
+dist.ini.bak
 lib/ETL/Yertl.pm
 lib/ETL/Yertl/Command/yfrom.pm
 lib/ETL/Yertl/Command/ymask.pm
@@ -20,6 +22,7 @@ lib/ETL/Yertl/Command/yq.pm
 lib/ETL/Yertl/Command/yq/RecDescent.pm
 lib/ETL/Yertl/Command/yq/RecDescentTree.pm
 lib/ETL/Yertl/Command/yq/Regex.pm
+lib/ETL/Yertl/Command/ysql.pm
 lib/ETL/Yertl/Command/yto.pm
 lib/ETL/Yertl/Format/csv.pm
 lib/ETL/Yertl/Format/json.pm
@@ -28,6 +31,7 @@ t/00_compile.t
 t/bin/yfrom.t
 t/bin/ymask.t
 t/bin/yq.t
+t/bin/ysql.t
 t/bin/yto.t
 t/command/yq/combinator.t
 t/command/yq/comparison.t
@@ -40,6 +44,8 @@ t/format/json.t
 t/format/yaml.t
 t/lib/LowVersion.pm
 t/share/command/ymask/in.yaml
+t/share/command/ysql/deep.yml
+t/share/command/ysql/write.yml
 t/share/csv/test.csv
 t/share/json/test.json
 t/share/yaml/foo.yaml
